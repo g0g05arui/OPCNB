@@ -1,6 +1,9 @@
 # On Page Change Notification Bot
 
 Easy to set-up discord bot or standalone app
+Should be only used for static or close-to static websites.
+
+For ex : any website which has a clock will send tons of messages.
 
 # Build Instructions
 
