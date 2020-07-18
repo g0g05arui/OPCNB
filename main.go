@@ -128,33 +128,34 @@ func updateCfg() {
 
 func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Content[:len(botCfg.Prefix)] == botCfg.Prefix {
-		if len(m.Content) > 4 && m.Content[:4] == "!set" {
-			if checkURL(strings.TrimSpace(m.Content[4:])) {
-				botCfg.URL = strings.TrimSpace(m.Content[4:])
+		if len(m.Content) > 3+len(botCfg.Prefix) && m.Content[:3+len(botCfg.Prefix)] == "!set" {
+			if checkURL(strings.TrimSpace(m.Content[3+len(botCfg.Prefix):])) {
+				botCfg.URL = strings.TrimSpace(m.Content[3+len(botCfg.Prefix):])
 				updateCfg()
 				s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("URL changed to : %s", botCfg.URL))
 			} else {
 				s.ChannelMessageSend(m.ChannelID, "Invalid URL")
 			}
 		}
-		if len(m.Content) >= 5 && m.Content[:5] == "!what" {
+		if len(m.Content) >= 4+len(botCfg.Prefix) && m.Content[:4+len(botCfg.Prefix)] == botCfg.Prefix+"what" {
 			s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Now watching URL : %s", botCfg.URL))
 		}
-		if len(m.Content) >= 6 && m.Content[:6] == "!start" {
+		if len(m.Content) >= 5+len(botCfg.Prefix) && m.Content[:5+len(botCfg.Prefix)] == botCfg.Prefix+"start" {
 			botCfg.Online = true
 			s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Bot starting..."))
 			updateCfg()
 		}
-		if len(m.Content) >= 5 && m.Content[:5] == "!stop" {
+		if len(m.Content) >= 4+len(botCfg.Prefix) && m.Content[:4+len(botCfg.Prefix)] == botCfg.Prefix+"stop" {
 			botCfg.Online = false
 			s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Bot stoping..."))
 			updateCfg()
 		}
-		if len(m.Content) >= 5 && m.Content[:5] == "!chch" {
-			botCfg.Channel = strings.TrimSpace(m.Content[5:])
+		if len(m.Content) >= 4+len(botCfg.Prefix) && m.Content[:4+len(botCfg.Prefix)] == botCfg.Prefix+"chch" {
+			botCfg.Channel = strings.TrimSpace(m.Content[4+len(botCfg.Prefix):])
 			s.ChannelMessageSend(m.ChannelID, "Update channel changed")
 			updateCfg()
 		}
+
 	} else {
 		return
 	}
